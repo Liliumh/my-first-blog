@@ -1,0 +1,55 @@
+14:29 ~ $ pa_autconfigure_django.py
+bash: pa_autconfigure_django.py: command not found
+14:29 ~ $ ls
+README.txt  liliumh.pythonanywhere.com
+14:30 ~ $ blog  db.sqlite3  manage.py  mysite requirements.txt static
+bash: blog: command not found
+14:31 ~ $ (ola.pythonanywhere.com)
+bash: ola.pythonanywhere.com: command not found
+14:31 ~ $ ls
+README.txt  liliumh.pythonanywhere.com
+14:31 ~ $ blog  db.sqlite3  manage.py  mysite requirements.txt static
+bash: blog: command not found
+14:31 ~ $ (ola.pythonanywhere.com)
+bash: ola.pythonanywhere.com: command not found
+14:31 ~ $ ls blog/
+ls: cannot access 'blog/': No such file or directory
+14:31 ~ $ __init__.py  __pycache__  admin.py  forms.py  migrations  models.py  static
+bash: __init__.py: command not found
+14:31 ~ $ templates  tests.py  urls.py  views.py
+bash: templates: command not found
+14:31 ~ $ ls blog/
+ls: cannot access 'blog/': No such file or directory
+14:31 ~ $ pa_autoconfigure_django.py https://github.com/<your-github-username>/my-first-blog.git
+bash: your-github-username: No such file or directory
+14:35 ~ $ pa_autoconfigure_django.py https://github.com/Liliumh/my-first-blog.git
+< Running API sanity checks >
+   \
+    ~<:>>>>>>>>>
+Traceback (most recent call last):
+  File "/home/Liliumh/.local/bin/pa_autoconfigure_django.py", line 52, in <module>
+    main(arguments['<git-repo-url>'], arguments['--domain'], arguments['--python'], nuke=arguments.get(
+'--nuke'))
+  File "/home/Liliumh/.local/bin/pa_autoconfigure_django.py", line 34, in main
+    project.sanity_checks(nuke=nuke)
+  File "/home/Liliumh/.local/lib/python3.6/site-packages/pythonanywhere/project.py", line 24, in sanity
+_checks
+    self.webapp.sanity_checks(nuke=nuke)
+  File "/home/Liliumh/.local/lib/python3.6/site-packages/pythonanywhere/api.py", line 90, in sanity_che
+cks
+    domain=self.domain
+pythonanywhere.exceptions.SanityException: You already have a webapp for liliumh.pythonanywhere.com.
+Use the --nuke option if you want to replace it.
+14:36 ~ $ ls
+README.txt  liliumh.pythonanywhere.com
+14:36 ~ $ ls blog/
+ls: cannot access 'blog/': No such file or directory
+14:37 ~ $ ^C
+14:53 ~ $ ^C
+14:53 ~ $ ^C
+14:53 ~ $ ^C
+14:53 ~ $ stop
+bash: stop: command not found
+14:53 ~ $ exit
+exit
+Console closed.

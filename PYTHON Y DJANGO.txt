@@ -90,3 +90,100 @@ db.sqlite3
 .DS_Store
 
 PARA MOSTRAR INFO SOBRE ARCHIBO ESCRIBIR en consola: git status
+LUEGO: git add --all .
+LUEGO: git commit -m "Mi aplicación Django Girls, primer commit"
+
+REGISTRARSE en: GitHub.com 
+NOMBRE REPOSITORIO: my-first-blog
+
+ESCRIBIR CONSOLA: 
+- git remote add origin https://github.com/liliumh/my-first-blog.git
+- git push -u origin master
+
+CREAR CUENTA EN https://www.pythonanywhere.com/
+Create new API token
+iniciar una consola "Bash"
+Instalar: pip3.6 install --user pythonanywhere
+Escribir: pa_autoconfigure_django.py https://github.com/Liliumh/my-first-blog.git
+Escribir: python manage.py createsuperuser
+AÑADIR A ALLOWED_HOSTS  en pythonanywhere mysite/settings.py 'liliumh.pythonanywhere.com'
+
+ESCRIBIR EN mysite/urls.py: (include, blog.urls)
+from django.urls import path, include
+from django.contrib import admin
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('blog.urls')),
+]
+
+AÑADIR NUEVO ARCHIVO urls.py en el directorio blog
+AÑADIR: 
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.post_list, name='post_list'),
+]
+
+ESCRIBIR EN blog/views.py :
+def post_list(request):
+    return render(request, 'blog/post_list.html', {})
+
+AÑADIR CARPETA templates dentro de carpeta blog, 
+y dentro de templates otra llamada blog
+Dentro añadir archivo: post_list.html
+Dentro de este escribir:
+<html>
+    <head>
+        <title>Django Girls blog</title>
+    </head>
+    <body>
+        <div>
+            <h1><a href="/">Django Girls Blog</a></h1>
+        </div>
+
+        <div>
+            <p>published: 14.06.2014, 12:14</p>
+            <h2><a href="">My first post</a></h2>
+            <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        </div>
+
+        <div>
+            <p>published: 14.06.2014, 12:14</p>
+            <h2><a href="">My second post</a></h2>
+            <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut f.</p>
+        </div>
+    </body>
+</html>
+
+VER SITIO WEB: http://127.0.0.1:8000/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

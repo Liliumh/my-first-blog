@@ -144,3 +144,10 @@ while contador < 6:
 # for (i = 1; i < 6; i+=1) {
 #         System.out.println(i);
 # }
+
+# Triples comillas (''' o """) son llamadas docstrings -
+# puedes escribirlos en la parte superior de un archivo, clase o método
+# para describir lo que hace.
+'''
+
+'''

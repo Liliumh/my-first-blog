@@ -159,19 +159,43 @@ Dentro de este escribir:
 
 VER SITIO WEB: http://127.0.0.1:8000/
 
+ESCRIBIR EN CONSOLA:
+- git status
+- git add --all .
+- git status
+- git commit -m "Cambie el HTML para la página."
+- git push
 
+ESCRIBIR EN CONSOLA BASH:
+- cd ~/liliumh.pythonanywhere.com
+- git pull
+#Si da error: git fetch --all y luego git reset --hard origin/master
 
+RELOAD LA WEB
 
+ESCRIBIR EN CONSOLA:
+- python manage.py shell
+- Post.objects.all()
+- from blog.models import Post
+- Post.objects.all()
+- from django.contrib.auth.models import User
+- User.objects.all()
+- me = User.objects.get(username='lilium')
+- Post.objects.create(author=me, title='Sample title', text='Test')
+<Post: Sample title> #Añade entradas
+- Post.objects.all() #Para ver si funcionó.
+- Post.objects.filter(author=me) #Para encontrar todos los post
+- Post.objects.filter(title__contains='title') #Para encontrar entradas con la palabra title en campo title
+>>> from django.utils import timezone #Lista con todos los post por fecha
+>>> Post.objects.filter(published_date__lte=timezone.now())
 
+>>> post = Post.objects.get(title="Sample title") #Para añadir el post que se hizo desde consola
+>>> post.publish() #Se publica
+#Si dice que hay mas de 1 borrarlos todos con Post.objects.all().remove() y vuelves a crear el post
 
-
-
-
-
-
-
-
-
+>>> Post.objects.order_by('created_date') #Para ordenarlos por campo
+>>> Post.objects.order_by('-created_date') #Para invertir el orden agregando - al principio
+>>> Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date') #Para encadenarlos
 
 
 

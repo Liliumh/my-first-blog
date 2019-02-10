@@ -1,0 +1,92 @@
+if si
+elif sino si...
+else sino|si todo lo anterior falla
+
+== igual
+!= no igual
+
+> mas grande que
+< menor que
+>= mas grande o igual que
+<= menor o igual que
+
+Condiciones encandenadas:
+
+nombre=='lydia' and estado=='useless' si y si
+nombre=='lydia' or estado=='useless' si o si
+
+def definir
+
+for i in range (valor Inicial, mientras Sea Menor)
+
+DJANGO:
+
+CREAR PROYECTO:
+django-admin.exe startproject mysite .
+
+MIGRAR BASE DATOS:
+python manage.py migrate
+
+ABRIR SERVIDOR:
+python manage.py runserver
+
+CREAR APLICACIÓN:
+python manage.py startapp blog 
+
+AÑADIR BLOG en mysite settings: 'blog',
+
+MODELO DEL POST:
+Abrir blog/models.py
+Escribir:
+from django.db import models
+from django.utils import timezone
+
+
+class Post(models.Model):
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(
+            default=timezone.now)
+    published_date = models.DateTimeField(
+            blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.title
+
+GUARDAR CAMBIOS EN MODELO:
+Escribir en consola: python manage.py makemigrations blog
+Escibir: python manage.py migrate blog
+
+INCLUIR MODELO:
+Reemplazar en blog/admin.py con: 
+from django.contrib import admin
+from .models import Post
+
+admin.site.register(Post)
+
+CREAR SUPERUSUARIO:
+Escribir en consola: python manage.py createsuperuser
+
+TENER INSTALADO: GitHub
+CREAR REPOSITORIO DE CÓDIGO (Escribir en consola):
+git init
+git config --global user."Tu nombre"
+git config --global user.user.email tu@ejemplo.com
+
+CREAR NUEVO ARCHIVO:
+.gitignore
+Escribir en el:
+*.pyc
+*~
+__pycache__
+myvenv
+db.sqlite3
+/static
+.DS_Store
+
+PARA MOSTRAR INFO SOBRE ARCHIBO ESCRIBIR en consola: git status

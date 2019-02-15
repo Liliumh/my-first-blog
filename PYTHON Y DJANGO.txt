@@ -197,12 +197,355 @@ ESCRIBIR EN CONSOLA:
 >>> Post.objects.order_by('-created_date') #Para invertir el orden agregando - al principio
 >>> Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date') #Para encadenarlos
 
+#PARA CAMBIAR VALORES DE LOS MODELOS (nombres post) primero lo seleccionas con filter, si solo tienes 1 pones .update(campo='nuevo valor')
+fila=Post.objects.filter(id=10)
+fila.update(title='useless')
 
+AÑADIR EN views.py:
+from django.shortcuts import render
+from django.utils import timezone
+from .models import Post
 
+def post_list(request):
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'blog/post_list.html', {'posts': posts})
 
+AÑADIR/MODIFICAR EN templates post_list: 
+{% for post in posts %}
+{{post.published_date}}
+{{post.title}}
+{{ post.text|linebreaksbr }}
+{% endfor %}
 
+SUBIR CÓDIGO A GITHUB:
+git status
+git add --all .
+git status
+git commit -m #"Templates modificados para mostrar post desde base de datos."
+git push
 
+cd 
+git pull
 
+RELOAD WEB
+
+CSS:
+AÑADIR EN HEAD HTML:
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+CREAR CARPETA static DENTRO DE la app blog, CREAR CARPETA css DENTRO DE static, 
+CREAR NUEVO ARCHIVO DENTRO DE CARPETA css LLAMADO: blog.css
+
+AÑADIR EN blog.css:
+h1 a {
+    color: #FCA205;
+}
+
+AÑADIR EN blog/templates/blog/post_list.html AL PRINCIPIO:
+{% load static %} #Para decirle a nuestra plantilla HTML que hemos añadido código CSS
+
+AÑADIR ENTRE <head> y <head>, DESPUÉS DE LOS ENLACES A ARCHIVOS CSS DE BOOTSTRAP:
+<link rel="stylesheet" href="{% static 'css/blog.css' %}"> #Le decimos a nuestra plantilla dónde se encuentra nuestro archivo css
+
+AÑADIR EN blog/static/css/blog.css : #Aumenta el margen en el lado izquierdo
+
+body {
+    padding-left: 15px;
+}
+
+AÑADIR EN <head> del archivo blog/templates/blog/post_list.html: #Personaliza la tipografía del título
+<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+AÑADIR EN post_list.html:
+class="page-header"> #Al div del encabezado
+class="post"> #Al div de la publicación del blog
+
+AÑADIR EN blog.css: #Bloques de declaración a selectores
+.page-header {
+    background-color: #ff9400;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+    color: #ffffff;
+    font-size: 36pt;
+    text-decoration: none;
+}
+
+.content {
+    margin-left: 40px;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Lobster', cursive;
+}
+
+.date {
+    float: right;
+    color: #828282;
+}
+
+.save {
+    float: right;
+}
+
+.post-form textarea, .post-form input {
+    width: 100%;
+}
+
+.top-menu, .top-menu:hover, .top-menu:visited {
+    color: #ffffff;
+    float: right;
+    font-size: 26pt;
+    margin-right: 20px;
+}
+
+.post {
+    margin-bottom: 70px;
+}
+
+.post h1 a, .post h1 a:visited {
+    color: #000000;
+}
+
+CAMBIAR EN post_list.html: #Rodea el código HTML que muestra los posts con declaraciones de clases (desde {% for post in posts %} hasta {% endfor %})
+<div class="content container">
+    <div class="row">
+        <div class="col-md-8">
+            {% for post in posts %}
+                <div class="post">
+                    <div class="date">
+                        <p>published: {{ post.published_date }}</p>
+                    </div>
+                    <h1><a href="">{{ post.title }}</a></h1>
+                    <p>{{ post.text|linebreaksbr }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+CREAR un archivo base.html en blog/templates/blog/
+Copiar todo el contenido de post_list.html en base.html
+REEMPLAZAR en base.html el <body> (todo lo que haya entre <body> and </body>) con:
+<body>
+    <div class="page-header">
+        <h1><a href="/">Django Girls Blog</a></h1>
+    </div>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+            {% block content %}
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+
+EN blog/templates/blog/post_list.html QUITAR TODO LO QUE HAY POR ENCIMA DE:
+{% for post in posts %} y por debajo de {% endfor %}  :
+{% for post in posts %}
+    <div class="post">
+        <div class="date">
+            {{ post.published_date }}
+        </div>
+        <h1><a href="">{{ post.title }}</a></h1>
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+{% endfor %}
+
+PONER todo entre {% block content %} y {% endblock %}
+{% block content %}
+    {% for post in posts %}
+        <div class="post">
+            <div class="date">
+                {{ post.published_date }}
+            </div>
+            <h1><a href="">{{ post.title }}</a></h1>
+            <p>{{ post.text|linebreaksbr }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+AÑADIR etiqueta "extends" al comienzo del archivo (ARRIBA DEL TODO):
+{% extends 'blog/base.html' %}
+
+SI DA ERROR REINICIAR: 
+Ctrl+C
+python manage.py runserver.
+
+CAMBIAR EN post_list.html:
+<h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+
+AÑADIR en urls.py:
+path('post/<int:pk>/', views.post_detail, name='post_detail'),
+]
+
+AÑADIR EN views.py:
+Post.objects.get(pk=pk) #?¿
+
+from django.shortcuts import render, get_object_or_404
+
+Y al final del archivo:
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'blog/post_detail.html',
+{'post': post})
+
+AÑADIR fichero en blog/templates/blog llamado:
+post_detail.html
+Y escribir:
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div class="post">
+        {% if post.published_date %}
+            <div class="date">
+                {{ post.published_date }}
+            </div>
+        {% endif %}
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+{% endblock %}
+
+DESPLEGAR:
+- git status
+- git add -A .
+- git status
+- git commit -m 
+- git push
+
+EN CONSOLA BASH:
+cd ~/liliumh.pythonanywhere.com
+git pull
+
+ACTUALIZAR los ficheros estáticos (BASH):
+workon liliumh.pythonanywhere.com
+python manage.py collectstatic
+
+CREAR ARCHIVO EN blog:
+forms.py
+
+ESCRIBIR:
+from django import forms
+
+from .models import Post
+
+class PostForm(forms.ModelForm):
+
+    class Meta:
+        model = Post
+        fields = ('title', 'text',)
+
+AÑADIR en el div A blog/templates/blog/post_base.html: (bajo <div class="page-header">)
+<a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+
+error NoReverseMatch
+
+AÑADIR EN blog/urls.py:
+path('post/new', views.post_new, name='post_new'),
+
+AttributeError #Por no tener la vista post_new
+
+AÑADIR EN blog/views.py:
+from .forms import PostForm
+Y:
+def post_new(request):
+    form = PostForm()
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+CREAR  fichero post_edit.html el el directorio blog/templates/blog
+ESCRIBIR EN blog/templates/blog/post_edit.html:
+
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>New post</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+{% endblock %}
+
+AÑADIR EN blog/views.py:
+if request.method == "POST":
+    form = PostForm(request.POST)
+else:
+    form = PostForm()
+
+if form.is_valid():
+    post = form.save(commit=False)
+    post.author = request.user
+    post.published_date = timezone.now()
+    post.save()
+
+- from django.shortcuts import redirect
+
+return redirect('post_detail', pk=post.pk)
+
+SE VERÍA ASÍ:
+def post_new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('blog.views.post_detail', pk=post.pk)
+    else:
+        form = PostForm()
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+AGREGAR LINEA EN blog/templates/blog/post_detail.html:
+<a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+QUEDA ASÍ:
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div class="post">
+        {% if post.published_date %}
+            <div class="date">
+                {{ post.published_date }}
+            </div>
+        {% endif %}
+        <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+{% endblock %}
+
+AÑADIR EN blog/urls.py:
+path('post/<int:pk>/edit/', views.post_edit, name='post_edit')
+
+AÑADIR EN blog/views.py:(FINAL DEL TODO)
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+SEGURIDAD
+AÑADIR EN blog/templates/blog/base.html:
+{% if user.is_authenticated %} #
+    <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+{% endif %} #
+
+AÑADIR EN post_detail.html:
+{% if user.is_authenticated %} #
+    <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+{% endif %} #
 
 
 

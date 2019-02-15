@@ -415,7 +415,7 @@ DESPLEGAR:
 - git status
 - git add -A .
 - git status
-- git commit -m 
+- git commit -m "Agregadas vistas y plantilla para el detalle del post del blog así como también CSS para el sitio."
 - git push
 
 EN CONSOLA BASH:
@@ -547,7 +547,16 @@ AÑADIR EN post_detail.html:
     <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
 {% endif %} #
 
+DESPLIEGUE (SUBIR A GITHUB)
+$ git status
+$ git add --all .
+$ git status
+$ git commit -m "Added views to create/edit blog post inside the site."
+$ git push
 
+EN CONSOLA BASH:
+cd ~/liliumh.pythonanywhere.com
+git pull
 
 
 

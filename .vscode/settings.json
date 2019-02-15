@@ -1,3 +1,8 @@
 {
-    "python.pythonPath": "myvenv\\Scripts\\python.exe"
+    "python.pythonPath": "myvenv\\Scripts\\python.exe",
+    "terminal.integrated.shell.windows": "C:\\windows\\system32\\cmd.exe",
+    "terminal.integrated.shellArgs.windows": [
+        "/k",
+        "myvenv\\Scripts\\activate && python manage.py runserver",
+    ],
 }

@@ -19,6 +19,9 @@ def definir
 
 for i in range (valor Inicial, mientras Sea Menor)
 
+METERSE EN EL ENVIOREMENT
+myvenv\Scripts\activate
+
 DJANGO:
 
 CREAR PROYECTO:

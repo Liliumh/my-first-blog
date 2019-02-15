@@ -1,10 +1,8 @@
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post
-from django.shortcuts import render, get_object_or_404
 from .forms import PostForm
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 
 def post_list(request):
@@ -17,11 +15,15 @@ def post_list(request):
 # No vale pa na
 # Post.objects.get(pk=pk)
 
-
 def post_detail(request, pk):
+    print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html',
-                  {'post': post})
+    return render(request, 'blog/post_detail.html', {'post': post})
+
+
+# @login_required
+# def post_new(request):
+#     [...]
 
 
 def post_edit(request, pk):
@@ -36,4 +38,29 @@ def post_edit(request, pk):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+
+def post_publish(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.publish()
+    return redirect('post_detail', pk=pk)
+
+
+# @login_required
+# def post_new(request):
+#     [...]
+
+
+def post_new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})

@@ -1,5 +1,5 @@
 h1 a {
-    color: #FCA205;
+    color:#93afbd;
     font-family: 'Lobster';
 
 }
@@ -13,7 +13,7 @@ body {
 }
 
 .page-header {
-    background-color: #ff9400;
+    background-color: #7475d8;
     margin-top: 0;
     padding: 20px 20px 20px 40px;
 }
@@ -34,7 +34,7 @@ h1, h2, h3, h4 {
 
 .date {
     float: right;
-    color: #828282;
+    color: #d17c7c;
 }
 
 .save {
@@ -64,4 +64,8 @@ h1, h2, h3, h4 {
     height:3em;
     overflow: hidden;
     color:purple
+}
+
+.comment {
+    margin: 20px 0px 20px 20px;
 }

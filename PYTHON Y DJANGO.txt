@@ -564,8 +564,3 @@ git pull
 GUARDAR NUEVOS POST COMO BORRADORES:
 EN blog/views.py (post_new y post_edit) BORRAR LA LÍNEA:
 post.published_date = timezone.now()
-
-
-
-
-
